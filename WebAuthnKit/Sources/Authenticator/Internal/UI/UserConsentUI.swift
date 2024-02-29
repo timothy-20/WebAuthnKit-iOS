@@ -244,6 +244,11 @@ public class UserConsentUI: UserConsentViewControllerDelegate {
                                 WAKLogger.debug("<UserConsentUI> system cancel")
                                 self.dispatchError(resolver, .notAllowed)
                                 
+                            // 생체 인증(FaceID) 권한 요청 시, 사용 안함을 선택할 경우
+                            case LAError.biometryNotAvailable:
+                                WAKLogger.debug("<UserConsentUI> biometry not available")
+                                self.dispatchError(resolver, .notAllowed)
+                                
                             default:
                                 WAKLogger.debug("<UserConsentUI> must not come here")
                                 self.dispatchError(resolver, .unknown)
