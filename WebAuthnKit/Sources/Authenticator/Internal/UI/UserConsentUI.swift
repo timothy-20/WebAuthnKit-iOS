@@ -224,13 +224,14 @@ public class UserConsentUI: UserConsentViewControllerDelegate {
                             }
                         } else if let error = error {
                             switch LAError(_nsError: error as NSError) {
+                            // 생체 인증 시도 상황에서 암호 사용을 선택할 경우
                             case LAError.userFallback:
                                 WAKLogger.debug("<UserConsentUI> user fallback")
                                 self.dispatchError(resolver, .notAllowed)
                                 
                             case LAError.userCancel:
                                 WAKLogger.debug("<UserConsentUI> user cancel")
-                                self.dispatchError(resolver, .notAllowed)
+                                self.dispatchError(resolver, .cancelled)
                                 
                             case LAError.authenticationFailed:
                                 WAKLogger.debug("<UserConsentUI> authentication failed")
@@ -242,9 +243,9 @@ public class UserConsentUI: UserConsentViewControllerDelegate {
                                 
                             case LAError.systemCancel:
                                 WAKLogger.debug("<UserConsentUI> system cancel")
-                                self.dispatchError(resolver, .notAllowed)
+                                self.dispatchError(resolver, .cancelled)
                                 
-                            // 생체 인증(FaceID) 권한 요청 시, 사용 안함을 선택할 경우
+                            // 생체 인증 권한 요청 시, 사용 안함을 선택할 경우
                             case LAError.biometryNotAvailable:
                                 WAKLogger.debug("<UserConsentUI> biometry not available")
                                 self.dispatchError(resolver, .notAllowed)
